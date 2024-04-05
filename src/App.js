@@ -1,10 +1,23 @@
-import Button from "./Button";
+import { useState, useEffect } from "react";
+
+function Hello() {
+  useEffect(() => {
+    console.log("I'm here✨");
+    return () => console.log("destroyed🔥");
+  }, []);
+  return <h3>Hello</h3>;
+}
 
 function App() {
+  const [showing, setShowing] = useState(false);
+  const onClick = () => {
+    setShowing((prev) => !prev);
+  };
+
   return (
     <div>
-      <h1>Welcome to my React app🔥</h1>
-      <Button text="I am a button" />
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
     </div>
   );
 }
