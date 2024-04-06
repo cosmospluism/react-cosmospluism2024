@@ -1,0 +1,14 @@
+.title {
+  color: lightblue;
+  display: inline;
+  padding: 10px 15px;
+}
+
+.btn {
+  background-color: lightblue;
+  color: white;
+  margin-left: 5px;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 4px;
+}

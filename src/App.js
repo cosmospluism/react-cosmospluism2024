@@ -1,23 +1,41 @@
 import { useState, useEffect } from "react";
-
-function Hello() {
-  useEffect(() => {
-    console.log("I'm here✨");
-    return () => console.log("destroyed🔥");
-  }, []);
-  return <h3>Hello</h3>;
-}
+import styles from "./App.module.css";
+// import Practice from "./Practice";
 
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => {
-    setShowing((prev) => !prev);
-  };
+  const [todo, setTodo] = useState("");
+  const [todos, setTodos] = useState([]);
+  function handleChange(e) {
+    setTodo(e.target.value);
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (todo === "") {
+      return;
+    }
+    setTodos((currentArray) => [todo, ...currentArray]);
+    setTodo("");
+  }
 
   return (
     <div>
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
+      <h3 className={styles.title}>To do list({todos.length}) 🌧️</h3>
+      <p></p>
+      <form onSubmit={handleSubmit}>
+        <input
+          onChange={handleChange}
+          value={todo}
+          type="text"
+          placeholder="Write your to do .."
+        />
+        <button className={styles.btn}>Add</button>
+      </form>
+      <p></p>
+      <ul>
+        {todos.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
