@@ -1,41 +1,73 @@
 import { useState, useEffect } from "react";
 import styles from "./App.module.css";
-// import Practice from "./Practice";
 
 function App() {
-  const [todo, setTodo] = useState("");
-  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([]);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetch("https://api.coinpaprika.com/v1/tickers")
+        .then((response) => response.json())
+        .then((json) => {
+          setCoins(json);
+          setLoading(false);
+        });
+    }, 1500);
+  }, []);
+  console.log(coins);
+
+  const [value, setValue] = useState(0);
   function handleChange(e) {
-    setTodo(e.target.value);
+    setValue(e.target.value);
   }
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (todo === "") {
-      return;
-    }
-    setTodos((currentArray) => [todo, ...currentArray]);
-    setTodo("");
+  function handleReset() {
+    setValue(0);
+  }
+  function handleUnitChange(e) {
+    console.log(e);
+    console.log(e.target.symbol);
   }
 
   return (
     <div>
-      <h3 className={styles.title}>To do list({todos.length}) 🌧️</h3>
+      <h2 className={styles.title}>Coin Converter 🪙</h2>
       <p></p>
-      <form onSubmit={handleSubmit}>
-        <input
-          onChange={handleChange}
-          value={todo}
-          type="text"
-          placeholder="Write your to do .."
-        />
-        <button className={styles.btn}>Add</button>
-      </form>
-      <p></p>
-      <ul>
-        {todos.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+      {loading ? (
+        <strong>Loading...</strong>
+      ) : (
+        <div>
+          {" "}
+          <select onChange={handleUnitChange}>
+            {coins.map((coin, id) => {
+              return (
+                <option key={id}>
+                  {coin.name} - {coin.symbol} : {coin.quotes.USD.price} USD
+                </option>
+              );
+            })}
+          </select>
+          <p></p>
+          <div>
+            <input
+              id="usd"
+              type="number"
+              value={value}
+              onChange={handleChange}
+            />
+            <label htmlFor="usd"> USD</label>
+            <span> = </span>
+            <input
+              id="unit"
+              type="number"
+              value={value * 0.000015}
+              onChange={handleChange}
+            />
+            <label htmlFor="unit"></label>
+            <p></p>
+            <button onClick={handleReset}>Reset</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

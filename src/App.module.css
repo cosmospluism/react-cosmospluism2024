@@ -1,7 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
+
 .title {
-  color: lightblue;
+  color: rgb(152, 187, 199);
   display: inline;
   padding: 10px 15px;
+  font-family: Pixelify Sans;
 }
 
 .btn {
